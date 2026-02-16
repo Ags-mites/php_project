@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Package, Users, ShoppingCart, Settings, LogOut } from 'lucide-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Package, Users, ShoppingCart, Settings, LogOut, Tags, Truck, Ruler } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -12,8 +13,6 @@ import {
 } from '@/components/ui/sidebar';
 import { type RootState } from '@/core/store/store';
 import { logout } from '@/modules/auth/store/authSlice';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 interface NavItem {
   title: string;
@@ -24,7 +23,11 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { title: 'Inventario', url: '/inventory', icon: Package, roles: ['Administrator', 'Supervisor'] },
+  { title: 'Categorías', url: '/categories', icon: Tags, roles: ['Administrator', 'Supervisor'] },
   { title: 'Clientes', url: '/clients', icon: Users, roles: ['Administrator', 'Supervisor'] },
+  { title: 'Empleados', url: '/employes', icon: Users, roles: ['Administrator'] },
+  { title: 'Proveedores', url: '/suppliers', icon: Truck, roles: ['Administrator', 'Supervisor'] },
+  { title: 'Tallas', url: '/sizes', icon: Ruler, roles: ['Administrator', 'Supervisor'] },
   { title: 'Ventas', url: '/sales', icon: ShoppingCart, roles: ['Administrator', 'Supervisor', 'Developer'] },
   { title: 'Configuración', url: '/settings', icon: Settings, roles: ['Administrator'] },
 ];

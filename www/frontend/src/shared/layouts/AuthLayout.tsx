@@ -11,7 +11,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/inventory" replace />;
   }
 
   return (

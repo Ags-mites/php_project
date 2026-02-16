@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/table';
 import { type RootState } from '@/core/store/store';
 import { productService } from '../services/productService';
-import { type Product, type ProductFormData, type Category, type Size, type Supplier } from '@/shared/schemas/product.schema';
+import { type Product, type ProductFormData, type Category, type Size, type Supplier } from '@/shared/schemas';
 import { ProductForm } from '../components/ProductForm';
 
 export function InventoryPage() {

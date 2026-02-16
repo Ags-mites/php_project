@@ -7,7 +7,6 @@ import { AppSidebar } from '../components/AppSidebar';
 import { Menu, Home } from 'lucide-react';
 
 const pathNames: Record<string, string> = {
-  '/dashboard': 'Dashboard',
   '/inventory': 'Productos',
   '/clients': 'Clientes',
   '/sales': 'Ventas',
@@ -16,7 +15,7 @@ const pathNames: Record<string, string> = {
 
 export function DashboardLayout() {
   const location = useLocation();
-  const currentPage = pathNames[location.pathname] || 'Dashboard';
+  const currentPage = pathNames[location.pathname] || 'Inventario';
 
   return (
     <SidebarProvider defaultOpen={true}>

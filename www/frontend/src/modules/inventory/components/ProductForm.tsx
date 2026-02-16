@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { productSchema, type ProductFormData, type Category, type Size, type Supplier } from '@/shared/schemas/product.schema';
+import { productSchema, type ProductFormData, type Category, type Size, type Supplier } from '@/shared/schemas';
 
 interface ProductFormProps {
   open: boolean;
