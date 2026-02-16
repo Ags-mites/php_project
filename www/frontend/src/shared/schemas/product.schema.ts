@@ -2,25 +2,31 @@ import { z } from 'zod';
 
 export const productSchema = z.object({
   codigo: z.string().min(1, 'Código requerido'),
-  nombre: z.string().min(1, 'Nombre requerido'),
-  descripcion: z.string().optional(),
-  precio: z.number().positive('Precio debe ser positivo'),
+  descripcion: z.string().min(1, 'Descripción requerida'),
+  color: z.string().min(1, 'Color requerido'),
+  marca: z.string().min(1, 'Marca requerida'),
   stock: z.number().int().min(0, 'Stock no puede ser negativo'),
-  categoria: z.string().optional(),
-  imagen: z.string().url().optional(),
+  precio: z.number().positive('Precio debe ser positivo'),
+  categoria_id: z.number().positive('Categoría requerida'),
+  talla_id: z.number().positive('Talla requerida'),
+  proveedor_id: z.number().positive('Proveedor requerido'),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;
 
 export interface Product {
-  id: string;
+  id: number;
   codigo: string;
-  nombre: string;
-  descripcion?: string;
-  precio: number;
+  descripcion: string;
+  color: string;
+  marca: string;
   stock: number;
-  categoria?: string;
-  imagen?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  precio: number;
+  nombre_categoria: string;
+  talla: string;
+  nombre_proveedor: string;
+}
+
+export interface ProductsResponse {
+  data: Product[];
 }

@@ -5,8 +5,7 @@ import { LoginPage } from '../../modules/auth/pages/LoginPage';
 import { RegisterPage } from '../../modules/auth/pages/RegisterPage';
 import { ProtectedRoute } from '../../modules/auth/components/ProtectedRoute';
 import { PublicRoute } from '../../modules/auth/components/PublicRoute';
-import { Inventory } from '@/modules/inventory/pages/Inventory';
-import { Sales } from '@/modules/sales/pages/Sales';
+import { InventoryPage } from '../../modules/inventory/pages/InventoryPage';
 
 export function AppRouter() {
   return (
@@ -26,8 +25,7 @@ export function AppRouter() {
         </ProtectedRoute>
       }>
         <Route path="/" element={<Navigate to="/inventory" replace />} />
-        <Route path="inventory" element={<Inventory />} />
-        <Route path="sales" element={<Sales />} />
+        <Route path="inventory" element={<InventoryPage />} />
       </Route>
     </Routes>
   );

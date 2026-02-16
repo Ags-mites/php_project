@@ -36,8 +36,4 @@ export const saleService = {
   create: async (data: SaleFormData): Promise<Sale> => {
     return apiClient.post<Sale>('/business/ventas', data);
   },
-
-  cancel: async (id: string): Promise<Sale> => {
-    return apiClient.patch<Sale>(`/business/ventas/${id}/cancelar`, {});
-  },
 };

@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . '/../repositories/ProductoRepository.php';
+include_once __DIR__ . '/../repositories/ProductRepository.php';
 include_once __DIR__ . '/SaleService.php';
 
 class ProductService {
@@ -7,7 +7,7 @@ class ProductService {
     private $saleService;
 
     public function __construct($db) {
-        $this->productRepository = new ProductoRepository($db);
+        $this->productRepository = new ProductRepository($db);
         $this->saleService = new SaleService($db);
     }
 
@@ -26,8 +26,8 @@ class ProductService {
                     "descripcion" => $row['DESCRIPCION'],
                     "color" => $row['COLOR'],
                     "marca" => $row['MARCA'],
-                    "stock" => $row['STOCK'],
-                    "precio" => $row['PRECIO'],
+                    "stock" => (int) $row['STOCK'],
+                    "precio" => (float) $row['PRECIO'],
                     "nombre_categoria" => $row['nombre_categoria'],
                     "talla" => $row['talla'],
                     "nombre_proveedor" => $row['nombre_proveedor'],

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/sonner';
 import { store } from './core/store/store';
 import { AppRouter } from './core/router/AppRouter';
 import { setTokenGetter, setOnUnauthorized } from './core/api/apiClient';
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
       <TokenInitializer />
       <TooltipProvider>
+        <Toaster richColors />
         <BrowserRouter>
           <AppRouter />
         </BrowserRouter>

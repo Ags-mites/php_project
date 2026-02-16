@@ -1,4 +1,4 @@
-type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export interface RequestConfig {
   method?: RequestMethod;
@@ -107,10 +107,6 @@ class ApiClient {
 
   delete<T>(endpoint: string, config?: RequestConfig): Promise<T> {
     return this.request<T>(endpoint, { ...config, method: 'DELETE' });
-  }
-
-  patch<T>(endpoint: string, body: unknown, config?: RequestConfig): Promise<T> {
-    return this.request<T>(endpoint, { ...config, method: 'PATCH', body });
   }
 }
 
