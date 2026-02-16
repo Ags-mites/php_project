@@ -25,7 +25,7 @@ const navItems: NavItem[] = [
   { title: 'Inventario', url: '/inventory', icon: Package, roles: ['Administrator', 'Supervisor'] },
   { title: 'Categorías', url: '/categories', icon: Tags, roles: ['Administrator', 'Supervisor'] },
   { title: 'Clientes', url: '/clients', icon: Users, roles: ['Administrator', 'Supervisor'] },
-  { title: 'Empleados', url: '/employes', icon: Users, roles: ['Administrator'] },
+  { title: 'Empleados', url: '/employees', icon: Users, roles: ['Administrator'] },
   { title: 'Proveedores', url: '/suppliers', icon: Truck, roles: ['Administrator', 'Supervisor'] },
   { title: 'Tallas', url: '/sizes', icon: Ruler, roles: ['Administrator', 'Supervisor'] },
   { title: 'Ventas', url: '/sales', icon: ShoppingCart, roles: ['Administrator', 'Supervisor', 'Developer'] },

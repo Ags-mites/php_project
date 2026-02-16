@@ -19,7 +19,7 @@ class SaleRepository {
           FROM " . $this->table_name . " as v
           LEFT JOIN CLIENTE c ON v.CLIENTE_ID = c.CLIENTE_ID
           LEFT JOIN EMPLEADO e ON v.EMPLEADO_ID = e.EMPLEADO_ID
-          ORDER BY v.VENTA_ID DESC";
+          ORDER BY v.VENTA_ID ASC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();

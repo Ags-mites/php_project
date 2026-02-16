@@ -19,26 +19,26 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { clientSchema, type ClientFormData } from '@/shared/schemas';
+import { supplierSchema, type SupplierFormData } from '@/shared/schemas';
 
-interface ClientFormProps {
+interface SupplierFormProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    initialData?: ClientFormData | null;
-    onSubmit: (data: ClientFormData) => Promise<void>;
+    initialData?: SupplierFormData | null;
+    onSubmit: (data: SupplierFormData) => Promise<void>;
 }
 
-export function ClientForm({ open, onOpenChange, initialData, onSubmit }: ClientFormProps) {
+export function SupplierForm({ open, onOpenChange, initialData, onSubmit }: SupplierFormProps) {
     const [isLoading, setIsLoading] = useState(false);
 
-    const form = useForm<ClientFormData>({
-        resolver: zodResolver(clientSchema),
+    const form = useForm<SupplierFormData>({
+        resolver: zodResolver(supplierSchema),
         defaultValues: initialData || {
-            nombre: '',
-            apellido: '',
-            email: '',
+            nombre_empresa: '',
             telefono: '',
+            email: '',
             direccion: '',
+            ciudad: '',
         },
     });
 
@@ -48,17 +48,17 @@ export function ClientForm({ open, onOpenChange, initialData, onSubmit }: Client
                 form.reset(initialData);
             } else {
                 form.reset({
-                    nombre: '',
-                    apellido: '',
-                    email: '',
+                    nombre_empresa: '',
                     telefono: '',
+                    email: '',
                     direccion: '',
+                    ciudad: '',
                 });
             }
         }
     }, [open, initialData, form]);
 
-    const handleSubmit = async (data: ClientFormData) => {
+    const handleSubmit = async (data: SupplierFormData) => {
         setIsLoading(true);
         try {
             await onSubmit(data);
@@ -73,49 +73,21 @@ export function ClientForm({ open, onOpenChange, initialData, onSubmit }: Client
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{initialData ? 'Editar Cliente' : 'Crear Cliente'}</DialogTitle>
+                    <DialogTitle>{initialData ? 'Editar Empleado' : 'Crear Empleado'}</DialogTitle>
                     <DialogDescription>
-                        {initialData ? 'Actualiza los datos del cliente' : 'Agrega un nuevo cliente'}
+                        {initialData ? 'Actualiza los datos del empleado' : 'Agrega un nuevo empleado'}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
                         <FormField
                             control={form.control}
-                            name="nombre"
+                            name="nombre_empresa"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Nombre</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Nombre del cliente" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="apellido"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Apellido</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Apellido del cliente" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Email del cliente" {...field} />
+                                        <Input placeholder="Nombre" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -129,7 +101,21 @@ export function ClientForm({ open, onOpenChange, initialData, onSubmit }: Client
                                 <FormItem>
                                     <FormLabel>Telefono</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Telefono del cliente" {...field} />
+                                        <Input placeholder="Telefono" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Email" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -143,7 +129,21 @@ export function ClientForm({ open, onOpenChange, initialData, onSubmit }: Client
                                 <FormItem>
                                     <FormLabel>Direccion</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Direccion del cliente" {...field} />
+                                        <Input placeholder="Direccion" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="ciudad"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Ciudad</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Ciudad" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

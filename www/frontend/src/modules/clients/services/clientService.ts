@@ -1,9 +1,5 @@
 import { apiClient } from '../../../core/api/apiClient';
-import {
-  type Client,
-  type ClientFormData,
-  type ClientsResponse
-} from '../../../shared/schemas';
+import { type Client, type ClientFormData, type ClientsResponse } from '../../../shared/schemas/client.schema';
 
 export const clientService = {
   getAll: async (): Promise<ClientsResponse> => {

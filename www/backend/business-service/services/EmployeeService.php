@@ -63,7 +63,7 @@ class EmployeeService {
         } else {
             return [
                 "status" => 404,
-                "body" => ["message" => "No employee with id $id found."]
+                "body" => ["message" => "No employe with id $id found."]
             ];
         }
     } 
@@ -77,7 +77,7 @@ class EmployeeService {
         } else {
             return [
                 "status" => 503, 
-                "body" => ["message" => "Unable to create employee."]
+                "body" => ["message" => "Unable to create employe."]
             ];
         }
     }
@@ -91,7 +91,7 @@ class EmployeeService {
         } else {
             return [
                 "status" => 503, 
-                "body" => ["message" => "Unable to update employee."]
+                "body" => ["message" => "Unable to update employe."]
             ];
         }
     }
@@ -105,7 +105,7 @@ class EmployeeService {
         } else {
             return [
                 "status" => 503, 
-                "body" => ["message" => "Unable to delete employee."]
+                "body" => ["message" => "Unable to delete employe."]
             ];
         }
     }

@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/table';
 import { type RootState } from '@/core/store/store';
 import { categoryService } from '../services/categoryService';
-import { type Category, type CategoryFormData } from '@/shared/schemas/category.schema';
+import { type Category, type CategoryFormData } from '@/shared/schemas';
 import { CategoryForm } from '../components/CategoryForm';
 
 export function CategoriesPage() {

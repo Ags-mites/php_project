@@ -19,7 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { categorySchema, type CategoryFormData } from '@/shared/schemas/category.schema';
+import { categorySchema, type CategoryFormData } from '@/shared/schemas';
 
 interface CategoryFormProps {
   open: boolean;

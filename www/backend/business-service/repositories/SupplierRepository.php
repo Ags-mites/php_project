@@ -11,7 +11,7 @@ class SupplierRepository {
         $query = "SELECT 
                 PROVEEDOR_ID, NOMBRE_EMPRESA, TELEFONO, EMAIL, DIRECCION, CIUDAD
           FROM " . $this->table_name . "
-          ORDER BY PROVEEDOR_ID DESC";
+          ORDER BY PROVEEDOR_ID ASC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();

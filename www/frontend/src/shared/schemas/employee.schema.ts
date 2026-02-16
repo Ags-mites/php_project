@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
-export const employeSchema = z.object({
+export const employeeSchema = z.object({
   nombre: z.string().min(1, 'Nombre requerido'),
   apellido: z.string().min(1, 'Apellido requerido'),
   cargo: z.string().min(1, 'Cargo requerido'),
-  telefono: z.string().min(1, 'Teléfono requerido'),
-  direccion: z.string().min(1, 'Dirección requerida'),
+  telefono: z.string().min(1, 'Telefono requerido'),
+  direccion: z.string().min(1, 'Direccion requerida'),
   fecha_ingreso: z.string().min(1, 'Fecha de ingreso requerida'),
 });
 
-export type EmployeFormData = z.infer<typeof employeSchema>;
+export type EmployeeFormData = z.infer<typeof employeeSchema>;
 
-export interface Employe {
+export interface Employee {
   id: number;
   nombre: string;
   apellido: string;
@@ -21,6 +21,6 @@ export interface Employe {
   fecha_ingreso: string;
 }
 
-export interface EmployesResponse {
-  data: Employe[];
+export interface EmployeesResponse {
+  data: Employee[];
 }

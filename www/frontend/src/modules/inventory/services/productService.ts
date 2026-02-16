@@ -1,12 +1,8 @@
 import { apiClient } from '../../../core/api/apiClient';
-import {
-  type Product,
-  type ProductFormData,
-  type ProductsResponse,
-  type CategoriesResponse,
-  type SizesResponse,
-  type SuppliersResponse
-} from '../../../shared/schemas';
+import { type Product, type ProductFormData, type ProductsResponse } from '../../../shared/schemas/product.schema';
+import { type CategoriesResponse } from '../../../shared/schemas/category.schema';
+import { type SizesResponse } from '../../../shared/schemas/size.schema';
+import { type SuppliersResponse } from '../../../shared/schemas/supplier.schema';
 
 export const productService = {
   getAll: async (): Promise<ProductsResponse> => {

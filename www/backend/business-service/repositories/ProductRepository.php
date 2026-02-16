@@ -18,7 +18,7 @@ class ProductRepository {
           LEFT JOIN CATEGORIA c ON p.CATEGORIA_ID = c.CATEGORIA_ID
           LEFT JOIN TALLA t ON p.TALLA_ID = t.TALLA_ID
           LEFT JOIN PROVEEDOR pr ON p.PROVEEDOR_ID = pr.PROVEEDOR_ID
-          ORDER BY p.PRODUCTO_ID DESC";
+          ORDER BY p.PRODUCTO_ID ASC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();

@@ -14,7 +14,13 @@ import {
 } from '@/components/ui/table';
 import { type RootState } from '@/core/store/store';
 import { productService } from '../services/productService';
-import { type Product, type ProductFormData, type Category, type Size, type Supplier } from '@/shared/schemas';
+import {
+  type Product,
+  type ProductFormData,
+  type Category,
+  type Size,
+  type Supplier
+} from '@/shared/schemas';
 import { ProductForm } from '../components/ProductForm';
 
 export function InventoryPage() {
@@ -202,13 +208,12 @@ export function InventoryPage() {
                   <TableCell>{product.color}</TableCell>
                   <TableCell>
                     <span
-                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                        product.stock === 0
+                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${product.stock === 0
                           ? 'bg-red-100 text-red-800'
                           : product.stock < 10
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : 'bg-green-100 text-green-800'
-                      }`}
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-green-100 text-green-800'
+                        }`}
                     >
                       {product.stock}
                     </span>

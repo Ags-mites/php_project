@@ -26,8 +26,8 @@ class EmployeeController {
     }
 
     public function create($data) {
-        $employeeDTO = new EmployeeDTO($data);
-        $validationError = $employeeDTO->validate();
+        $employeDTO = new EmployeeDTO($data);
+        $validationError = $employeDTO->validate();
 
         if ($validationError) {
              http_response_code(400); 
@@ -35,14 +35,14 @@ class EmployeeController {
              return;
         }
 
-        $response = $this->service->createEmployee($employeeDTO);
+        $response = $this->service->createEmployee($employeDTO);
         http_response_code($response['status']);
         echo json_encode($response['body']);
     }
 
     public function update($id, $data) {
-        $employeeDTO = new EmployeeDTO($data);
-        $validationError = $employeeDTO->validate();
+        $employeDTO = new EmployeeDTO($data);
+        $validationError = $employeDTO->validate();
 
         if ($validationError) {
              http_response_code(400); 
@@ -50,7 +50,7 @@ class EmployeeController {
              return;
         }
 
-        $response = $this->service->updateEmployee($id, $employeeDTO);
+        $response = $this->service->updateEmployee($id, $employeDTO);
         http_response_code($response['status']);
         echo json_encode($response['body']);
     }

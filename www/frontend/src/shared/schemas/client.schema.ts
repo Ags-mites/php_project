@@ -3,9 +3,9 @@ import { z } from 'zod';
 export const clientSchema = z.object({
   nombre: z.string().min(1, 'Nombre requerido'),
   apellido: z.string().min(1, 'Apellido requerido'),
-  telefono: z.string().min(1, 'Teléfono requerido'),
-  email: z.string().email('Email inválido'),
-  direccion: z.string().min(1, 'Dirección requerida'),
+  email: z.string().email('Email inválido').min(1, 'Email requerido'),
+  telefono: z.string().min(1, 'Telefono requerido'),
+  direccion: z.string().min(1, 'Direccion requerida'),
 });
 
 export type ClientFormData = z.infer<typeof clientSchema>;

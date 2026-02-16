@@ -11,7 +11,7 @@ class CategoryRepository {
         $query = "SELECT 
                 c.CATEGORIA_ID, c.NOMBRE as nombre_categoria, c.DESCRIPCION as descripcion_categoria
           FROM " . $this->table_name . " as c
-          ORDER BY c.CATEGORIA_ID DESC";
+          ORDER BY c.CATEGORIA_ID ASC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();

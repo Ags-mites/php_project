@@ -13,110 +13,108 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { type RootState } from '@/core/store/store';
-import { employeService } from '../services/employeService';
-import { type Employe, type EmployeFormData } from '@/shared/schemas';
-import { EmployeForm } from '../components/EmployeForm';
+import { supplierService } from '../services/supplierService';
+import { type Supplier, type SupplierFormData } from '@/shared/schemas';
+import { SupplierForm } from '../components/SupplierForm';
 
-export function EmployePage() {
-  const [employes, setEmployes] = useState<Employe[]>([]);
+export function SupplierPage() {
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
-  const [editingEmploye, setEditingEmploye] = useState<Employe | null>(null);
+  const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
 
   const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor';
 
-  const fetchEmployes = useCallback(async () => {
+  const fetchSuppliers = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await employeService.getAll();
-      setEmployes(response.data);
+      const response = await supplierService.getAll();
+      setSuppliers(response.data);
     } catch {
-      toast.error('Error al cargar los clientes');
+      toast.error('Error al cargar las tallas');
     } finally {
       setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchEmployes();
-  }, [fetchEmployes]);
+    fetchSuppliers();
+  }, [fetchSuppliers]);
 
-  const filteredEmployes = useMemo(() => {
-    if (!searchTerm.trim()) return employes;
+  const filteredSuppliers = useMemo(() => {
+    if (!searchTerm.trim()) return suppliers;
     const term = searchTerm.toLowerCase();
-    return employes.filter((employe) =>
-      employe.nombre.toLowerCase().includes(term) ||
-      employe.apellido.toLowerCase().includes(term) ||
-      employe.telefono.toLowerCase().includes(term) ||
-      employe.cargo.toLowerCase().includes(term) ||
-      employe.direccion.toLowerCase().includes(term)
+    return suppliers.filter((supplier) =>
+      supplier.nombre_empresa.toLowerCase().includes(term) ||
+      supplier.telefono?.toLowerCase().includes(term) ||
+      supplier.email?.toLowerCase().includes(term) ||
+      supplier.direccion?.toLowerCase().includes(term)
     );
-  }, [employes, searchTerm]);
+  }, [suppliers, searchTerm]);
 
-  const handleCreate = async (data: EmployeFormData) => {
+  const handleCreate = async (data: SupplierFormData) => {
     try {
-      await employeService.create(data);
-      toast.success('Empleado creado correctamente');
-      fetchEmployes();
+      await supplierService.create(data);
+      toast.success('Talla creada correctamente');
+      fetchSuppliers();
     } catch {
-      toast.error('Error al crear el empleado');
+      toast.error('Error al crear la talla');
     }
   };
 
-  const handleUpdate = async (data: EmployeFormData) => {
-    if (!editingEmploye) return;
+  const handleUpdate = async (data: SupplierFormData) => {
+    if (!editingSupplier) return;
     try {
-      await employeService.update(editingEmploye.id.toString(), data);
-      toast.success('Empleado actualizado correctamente');
-      fetchEmployes();
+      await supplierService.update(editingSupplier.id.toString(), data);
+      toast.success('Talla actualizada correctamente');
+      fetchSuppliers();
     } catch {
-      toast.error('Error al actualizar el empleado');
+      toast.error('Error al actualizar la talla');
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('¿Estás seguro de que deseas eliminar este empleado?')) return;
+    if (!confirm('¿Estás seguro de que deseas eliminar esta talla?')) return;
     try {
-      await employeService.delete(id.toString());
-      toast.success('Empleado eliminado correctamente');
-      fetchEmployes();
+      await supplierService.delete(id.toString());
+      toast.success('Talla eliminada correctamente');
+      fetchSuppliers();
     } catch {
-      toast.error('Error al eliminar el empleado');
+      toast.error('Error al eliminar la talla');
     }
   };
 
   const handleOpenCreate = () => {
-    setEditingEmploye(null);
+    setEditingSupplier(null);
     setOpenDialog(true);
   };
 
-  const handleOpenEdit = (employe: Employe) => {
-    setEditingEmploye(employe);
+  const handleOpenEdit = (supplier: Supplier) => {
+    setEditingSupplier(supplier);
     setOpenDialog(true);
   };
 
   const getInitialData = () => {
-    if (!editingEmploye) return null;
+    if (!editingSupplier) return null;
     return {
-      nombre: editingEmploye.nombre,
-      apellido: editingEmploye.apellido,
-      cargo: editingEmploye.cargo,
-      telefono: editingEmploye.telefono,
-      direccion: editingEmploye.direccion,
-      fecha_ingreso: editingEmploye.fecha_ingreso,
+      nombre_empresa: editingSupplier.nombre_empresa,
+      telefono: editingSupplier.telefono,
+      email: editingSupplier.email,
+      direccion: editingSupplier.direccion,
+      ciudad: editingSupplier.ciudad,
     };
   };
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Empleados</h1>
+        <h1 className="text-2xl font-bold">Proveedores</h1>
         {canManage && (
           <Button onClick={handleOpenCreate}>
             <Plus className="h-4 w-4 mr-2" />
-            Nuevo Empleado
+            Nuevo Proveedor
           </Button>
         )}
       </div>
@@ -125,7 +123,7 @@ export function EmployePage() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Buscar clientes..."
+            placeholder="Buscar proveedores..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-8"
@@ -135,15 +133,15 @@ export function EmployePage() {
 
       {isLoading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="text-muted-foreground">Cargando empleados...</div>
+          <div className="text-muted-foreground">Cargando proveedores...</div>
         </div>
-      ) : filteredEmployes.length === 0 ? (
+      ) : filteredSuppliers.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
           <Package className="h-12 w-12 mb-4" />
-          <p>{searchTerm ? 'No se encontraron empleados' : 'No hay empleados registrados'}</p>
+          <p>{searchTerm ? 'No se encontraron proveedores' : 'No hay proveedores registrados'}</p>
           {canManage && !searchTerm && (
             <Button variant="link" onClick={handleOpenCreate}>
-              Crear el primer empleado
+              Crear el primer proveedor
             </Button>
           )}
         </div>
@@ -153,37 +151,35 @@ export function EmployePage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Nombre</TableHead>
-                <TableHead>Apellido</TableHead>
                 <TableHead>Teléfono</TableHead>
-                <TableHead>Cargo</TableHead>
+                <TableHead>Email</TableHead>
                 <TableHead>Dirección</TableHead>
-                <TableHead>Fecha de Ingreso</TableHead>
+                <TableHead>Ciudad</TableHead>
                 {canManage && <TableHead className="text-right">Acciones</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredEmployes.map((employe) => (
-                <TableRow key={employe.id}>
-                  <TableCell>{employe.nombre}</TableCell>
-                  <TableCell>{employe.apellido}</TableCell>
-                  <TableCell>{employe.telefono}</TableCell>
-                  <TableCell>{employe.cargo}</TableCell>
-                  <TableCell>{employe.direccion}</TableCell>
-                  <TableCell>{employe.fecha_ingreso}</TableCell>
+              {filteredSuppliers.map((supplier) => (
+                <TableRow key={supplier.id}>
+                  <TableCell>{supplier.nombre_empresa}</TableCell>
+                  <TableCell>{supplier.telefono}</TableCell>
+                  <TableCell>{supplier.email}</TableCell>
+                  <TableCell>{supplier.direccion}</TableCell>
+                  <TableCell>{supplier.ciudad}</TableCell>
                   {canManage && (
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleOpenEdit(employe)}
+                          onClick={() => handleOpenEdit(supplier)}
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(employe.id)}
+                          onClick={() => handleDelete(supplier.id)}
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
@@ -197,11 +193,11 @@ export function EmployePage() {
         </div>
       )}
 
-      <EmployeForm
+      <SupplierForm
         open={openDialog}
         onOpenChange={setOpenDialog}
         initialData={getInitialData()}
-        onSubmit={editingEmploye ? handleUpdate : handleCreate}
+        onSubmit={editingSupplier ? handleUpdate : handleCreate}
       />
     </div>
   );

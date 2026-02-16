@@ -11,7 +11,7 @@ class EmployeeRepository {
         $query = "SELECT 
                 EMPLEADO_ID, NOMBRE, APELLIDO, CARGO, TELEFONO, DIRECCION, FECHA_INGRESO
           FROM " . $this->table_name . "
-          ORDER BY EMPLEADO_ID DESC";
+          ORDER BY EMPLEADO_ID ASC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();

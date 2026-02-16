@@ -30,23 +30,3 @@ export interface Product {
 export interface ProductsResponse {
   data: Product[];
 }
-
-export interface Size {
-  id: number;
-  talla: string;
-  descripcion: string;
-}
-
-export interface Supplier {
-  id: number;
-  nombre_empresa: string;
-  telefono: string;
-}
-
-export interface SizesResponse {
-  data: Size[];
-}
-
-export interface SuppliersResponse {
-  data: Supplier[];
-}

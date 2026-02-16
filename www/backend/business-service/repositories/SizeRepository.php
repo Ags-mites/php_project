@@ -11,7 +11,7 @@ class SizeRepository {
         $query = "SELECT 
                 TALLA_ID, TALLA, DESCRIPCION
           FROM " . $this->table_name . "
-          ORDER BY TALLA_ID DESC";
+          ORDER BY TALLA_ID ASC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
