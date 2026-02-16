@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host = "db";
-    private $db_name = "mydb";
+    private $db_name = "Boutique";
     private $username = "user";
     private $password = "userpassword";
     public $conn;
