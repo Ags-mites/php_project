@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { type RootState } from '../../../core/store/store';
+import { type RootState } from '../../core/store/store';
 
 interface AuthLayoutProps {
   children?: ReactNode;
