@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Pencil, Trash2, Plus, Package } from 'lucide-react';
+import { Pencil, Trash2, Plus, Package, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -13,14 +14,18 @@ import {
 } from '@/components/ui/table';
 import { type RootState } from '@/core/store/store';
 import { productService } from '../services/productService';
-import { type Product, type ProductFormData } from '@/shared/schemas/product.schema';
+import { type Product, type ProductFormData, type Category, type Size, type Supplier } from '@/shared/schemas/product.schema';
 import { ProductForm } from '../components/ProductForm';
 
 export function InventoryPage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [sizes, setSizes] = useState<Size[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
 
   const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor';
@@ -37,9 +42,39 @@ export function InventoryPage() {
     }
   }, []);
 
+  const fetchOptions = useCallback(async () => {
+    try {
+      const [catRes, sizeRes, supRes] = await Promise.all([
+        productService.getCategories(),
+        productService.getSizes(),
+        productService.getSuppliers(),
+      ]);
+      setCategories(catRes.data);
+      setSizes(sizeRes.data);
+      setSuppliers(supRes.data);
+    } catch (error) {
+      console.error('Error loading options:', error);
+    }
+  }, []);
+
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+    fetchOptions();
+  }, [fetchProducts, fetchOptions]);
+
+  const filteredProducts = useMemo(() => {
+    if (!searchTerm.trim()) return products;
+    const term = searchTerm.toLowerCase();
+    return products.filter((product) =>
+      product.codigo.toLowerCase().includes(term) ||
+      product.descripcion.toLowerCase().includes(term) ||
+      product.marca.toLowerCase().includes(term) ||
+      product.color.toLowerCase().includes(term) ||
+      product.nombre_categoria.toLowerCase().includes(term) ||
+      product.talla.toLowerCase().includes(term) ||
+      product.nombre_proveedor.toLowerCase().includes(term)
+    );
+  }, [products, searchTerm]);
 
   const handleCreate = async (data: ProductFormData) => {
     try {
@@ -83,6 +118,26 @@ export function InventoryPage() {
     setOpenDialog(true);
   };
 
+  const getInitialData = () => {
+    if (!editingProduct) return null;
+
+    const category = categories.find(c => c.nombre === editingProduct.nombre_categoria);
+    const size = sizes.find(s => s.talla === editingProduct.talla);
+    const supplier = suppliers.find(s => s.nombre_empresa === editingProduct.nombre_proveedor);
+
+    return {
+      codigo: editingProduct.codigo,
+      descripcion: editingProduct.descripcion,
+      color: editingProduct.color,
+      marca: editingProduct.marca,
+      stock: editingProduct.stock,
+      precio: parseFloat(editingProduct.precio),
+      categoria_id: category?.id || 0,
+      talla_id: size?.id || 0,
+      proveedor_id: supplier?.id || 0,
+    };
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -95,15 +150,27 @@ export function InventoryPage() {
         )}
       </div>
 
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Buscar productos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-8"
+          />
+        </div>
+      </div>
+
       {isLoading ? (
         <div className="flex items-center justify-center h-64">
           <div className="text-muted-foreground">Cargando productos...</div>
         </div>
-      ) : products.length === 0 ? (
+      ) : filteredProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
           <Package className="h-12 w-12 mb-4" />
-          <p>No hay productos registrados</p>
-          {canManage && (
+          <p>{searchTerm ? 'No se encontraron productos' : 'No hay productos registrados'}</p>
+          {canManage && !searchTerm && (
             <Button variant="link" onClick={handleOpenCreate}>
               Crear el primer producto
             </Button>
@@ -127,7 +194,7 @@ export function InventoryPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <TableRow key={product.id}>
                   <TableCell className="font-medium">{product.codigo}</TableCell>
                   <TableCell>{product.descripcion}</TableCell>
@@ -146,7 +213,7 @@ export function InventoryPage() {
                       {product.stock}
                     </span>
                   </TableCell>
-                  <TableCell>${product.precio.toFixed(2)}</TableCell>
+                  <TableCell>${parseFloat(product.precio).toFixed(2)}</TableCell>
                   <TableCell>{product.nombre_categoria}</TableCell>
                   <TableCell>{product.talla}</TableCell>
                   <TableCell>{product.nombre_proveedor}</TableCell>
@@ -180,17 +247,10 @@ export function InventoryPage() {
       <ProductForm
         open={openDialog}
         onOpenChange={setOpenDialog}
-        initialData={editingProduct ? {
-          codigo: editingProduct.codigo,
-          descripcion: editingProduct.descripcion,
-          color: editingProduct.color,
-          marca: editingProduct.marca,
-          stock: editingProduct.stock,
-          precio: editingProduct.precio,
-          categoria_id: 1,
-          talla_id: 1,
-          proveedor_id: 1,
-        } : null}
+        initialData={getInitialData()}
+        categories={categories}
+        sizes={sizes}
+        suppliers={suppliers}
         onSubmit={editingProduct ? handleUpdate : handleCreate}
       />
     </div>

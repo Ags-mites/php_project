@@ -1,5 +1,12 @@
 import { apiClient } from '../../../core/api/apiClient';
-import { type Product, type ProductFormData, type ProductsResponse } from '../../../shared/schemas/product.schema';
+import { 
+  type Product, 
+  type ProductFormData, 
+  type ProductsResponse,
+  type CategoriesResponse,
+  type SizesResponse,
+  type SuppliersResponse
+} from '../../../shared/schemas/product.schema';
 
 export const productService = {
   getAll: async (): Promise<ProductsResponse> => {
@@ -20,5 +27,17 @@ export const productService = {
 
   delete: async (id: string): Promise<void> => {
     return apiClient.delete(`/business/products/${id}`);
+  },
+
+  getCategories: async (): Promise<CategoriesResponse> => {
+    return apiClient.get<CategoriesResponse>('/business/categories');
+  },
+
+  getSizes: async (): Promise<SizesResponse> => {
+    return apiClient.get<SizesResponse>('/business/size');
+  },
+
+  getSuppliers: async (): Promise<SuppliersResponse> => {
+    return apiClient.get<SuppliersResponse>('/business/suppliers');
   },
 };

@@ -21,7 +21,7 @@ export interface Product {
   color: string;
   marca: string;
   stock: number;
-  precio: number;
+  precio: string;
   nombre_categoria: string;
   talla: string;
   nombre_proveedor: string;
@@ -29,4 +29,33 @@ export interface Product {
 
 export interface ProductsResponse {
   data: Product[];
+}
+
+export interface Category {
+  id: number;
+  nombre: string;
+}
+
+export interface Size {
+  id: number;
+  talla: string;
+  descripcion: string;
+}
+
+export interface Supplier {
+  id: number;
+  nombre_empresa: string;
+  telefono: string;
+}
+
+export interface CategoriesResponse {
+  data: Category[];
+}
+
+export interface SizesResponse {
+  data: Size[];
+}
+
+export interface SuppliersResponse {
+  data: Supplier[];
 }

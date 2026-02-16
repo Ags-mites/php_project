@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -26,16 +26,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { productSchema, type ProductFormData } from '@/shared/schemas/product.schema';
+import { productSchema, type ProductFormData, type Category, type Size, type Supplier } from '@/shared/schemas/product.schema';
 
 interface ProductFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialData?: ProductFormData | null;
+  categories: Category[];
+  sizes: Size[];
+  suppliers: Supplier[];
   onSubmit: (data: ProductFormData) => Promise<void>;
 }
 
-export function ProductForm({ open, onOpenChange, initialData, onSubmit }: ProductFormProps) {
+export function ProductForm({ open, onOpenChange, initialData, categories, sizes, suppliers, onSubmit }: ProductFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<ProductFormData>({
@@ -52,6 +55,26 @@ export function ProductForm({ open, onOpenChange, initialData, onSubmit }: Produ
       proveedor_id: 0,
     },
   });
+
+  useEffect(() => {
+    if (open) {
+      if (initialData) {
+        form.reset(initialData);
+      } else {
+        form.reset({
+          codigo: '',
+          descripcion: '',
+          color: '',
+          marca: '',
+          stock: 0,
+          precio: 0,
+          categoria_id: 0,
+          talla_id: 0,
+          proveedor_id: 0,
+        });
+      }
+    }
+  }, [open, initialData, form]);
 
   const handleSubmit = async (data: ProductFormData) => {
     setIsLoading(true);
@@ -183,15 +206,16 @@ export function ProductForm({ open, onOpenChange, initialData, onSubmit }: Produ
                       value={field.value?.toString() || ''}
                     >
                       <FormControl>
-                        <SelectTrigger className='w-full'>
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Seleccionar" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="1">Camisas</SelectItem>
-                        <SelectItem value="2">Pantalones</SelectItem>
-                        <SelectItem value="3">Zapatos</SelectItem>
-                        <SelectItem value="4">Accesorios</SelectItem>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat.id} value={cat.id.toString()}>
+                            {cat.nombre}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -212,15 +236,16 @@ export function ProductForm({ open, onOpenChange, initialData, onSubmit }: Produ
                       value={field.value?.toString() || ''}
                     >
                       <FormControl>
-                        <SelectTrigger className='w-full'>
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Seleccionar" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="1">S</SelectItem>
-                        <SelectItem value="2">M</SelectItem>
-                        <SelectItem value="3">L</SelectItem>
-                        <SelectItem value="4">XL</SelectItem>
+                        {sizes.map((size) => (
+                          <SelectItem key={size.id} value={size.id.toString()}>
+                            {size.talla}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -238,14 +263,16 @@ export function ProductForm({ open, onOpenChange, initialData, onSubmit }: Produ
                       value={field.value?.toString() || ''}
                     >
                       <FormControl>
-                        <SelectTrigger className='w-full'>
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Seleccionar" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="1">Proveedor A</SelectItem>
-                        <SelectItem value="2">Proveedor B</SelectItem>
-                        <SelectItem value="3">Proveedor C</SelectItem>
+                        {suppliers.map((sup) => (
+                          <SelectItem key={sup.id} value={sup.id.toString()}>
+                            {sup.nombre_empresa}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
