@@ -26,7 +26,7 @@ export function ClientsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor';
+  const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor' || user?.role === 'Developer';
 
   const fetchClients = useCallback(async () => {
     try {

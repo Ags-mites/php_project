@@ -34,7 +34,7 @@ export function InventoryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor';
+  const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor' || user?.role === 'Developer';
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -209,10 +209,10 @@ export function InventoryPage() {
                   <TableCell>
                     <span
                       className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${product.stock === 0
-                          ? 'bg-red-100 text-red-800'
-                          : product.stock < 10
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-green-100 text-green-800'
+                        ? 'bg-red-100 text-red-800'
+                        : product.stock < 10
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-green-100 text-green-800'
                         }`}
                     >
                       {product.stock}

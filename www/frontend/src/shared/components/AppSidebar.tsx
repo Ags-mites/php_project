@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Package, Users, ShoppingCart, Settings, LogOut, Tags, Truck, Ruler } from 'lucide-react';
+import { Package, Users, ShoppingCart, LogOut, Tags, Truck, Ruler } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { type RootState } from '@/core/store/store';
+import { useAppSelector, useAppDispatch } from '@/core/store/hooks';
 import { logout } from '@/modules/auth/store/authSlice';
 
 interface NavItem {
@@ -23,20 +22,19 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { title: 'Inventario', url: '/inventory', icon: Package, roles: ['Administrator', 'Supervisor'] },
-  { title: 'Categorías', url: '/categories', icon: Tags, roles: ['Administrator', 'Supervisor'] },
-  { title: 'Clientes', url: '/clients', icon: Users, roles: ['Administrator', 'Supervisor'] },
-  { title: 'Empleados', url: '/employees', icon: Users, roles: ['Administrator'] },
-  { title: 'Proveedores', url: '/suppliers', icon: Truck, roles: ['Administrator', 'Supervisor'] },
-  { title: 'Tallas', url: '/sizes', icon: Ruler, roles: ['Administrator', 'Supervisor'] },
+  { title: 'Inventario', url: '/inventory', icon: Package, roles: ['Administrator', 'Supervisor', 'Developer'] },
+  { title: 'Categorías', url: '/categories', icon: Tags, roles: ['Administrator', 'Supervisor', 'Developer'] },
+  { title: 'Clientes', url: '/clients', icon: Users, roles: ['Administrator', 'Supervisor', 'Developer'] },
+  { title: 'Empleados', url: '/employees', icon: Users, roles: ['Administrator', 'Developer'] },
+  { title: 'Proveedores', url: '/suppliers', icon: Truck, roles: ['Administrator', 'Supervisor', 'Developer'] },
+  { title: 'Tallas', url: '/sizes', icon: Ruler, roles: ['Administrator', 'Supervisor', 'Developer'] },
   { title: 'Ventas', url: '/sales', icon: ShoppingCart, roles: ['Administrator', 'Supervisor', 'Developer'] },
-  { title: 'Configuración', url: '/settings', icon: Settings, roles: ['Administrator'] },
 ];
 
 export function AppSidebar() {
   const location = useLocation();
-  const { user } = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const filteredNavItems = navItems.filter(

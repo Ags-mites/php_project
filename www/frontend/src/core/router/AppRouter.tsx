@@ -1,8 +1,9 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { AuthLayout } from '../../shared/layouts/AuthLayout';
 import { DashboardLayout } from '../../shared/layouts/DashboardLayout';
 import { LoginPage } from '../../modules/auth/pages/LoginPage';
 import { RegisterPage } from '../../modules/auth/pages/RegisterPage';
+import { LandingPage } from '../../modules/landing/pages/LandingPage';
 import { ProtectedRoute } from '../../modules/auth/components/ProtectedRoute';
 import { PublicRoute } from '../../modules/auth/components/PublicRoute';
 import { InventoryPage } from '../../modules/inventory/pages/InventoryPage';
@@ -19,6 +20,12 @@ import { EditSalePage } from '@/modules/sales/pages/EditSalePage';
 export function AppRouter() {
   return (
     <Routes>
+      <Route path="/" element={
+        <PublicRoute>
+          <LandingPage />
+        </PublicRoute>
+      } />
+
       <Route element={
         <PublicRoute>
           <AuthLayout />
@@ -33,7 +40,6 @@ export function AppRouter() {
           <DashboardLayout />
         </ProtectedRoute>
       }>
-        <Route path="/" element={<Navigate to="/inventory" replace />} />
         <Route path="inventory" element={<InventoryPage />} />
         <Route path="categories" element={<CategoriesPage />} />
         <Route path="clients" element={<ClientsPage />} />

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@/core/store/hooks';
 import { Plus, Package, Search, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { type RootState } from '@/core/store/store';
 import { saleService } from '../services/saleService';
 import { type Sale } from '@/shared/schemas/sale.schema';
 
@@ -22,7 +21,7 @@ export function SalesPage() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
 
   const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor' || user?.role === 'Developer';
 

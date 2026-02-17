@@ -40,6 +40,13 @@ if (in_array('login', $uri)) {
         http_response_code(405);
         echo json_encode(["message" => "Method not allowed"]);
     }
+} elseif (in_array('seed', $uri)) {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $auth->seed();
+    } else {
+        http_response_code(405);
+        echo json_encode(["message" => "Method not allowed"]);
+    }
 } else {
     http_response_code(404);
     echo json_encode(["message" => "Endpoint not found", "uri" => $_SERVER['REQUEST_URI']]);
