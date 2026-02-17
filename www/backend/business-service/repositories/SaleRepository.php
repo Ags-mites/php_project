@@ -138,6 +138,52 @@ class SaleRepository {
         }
     }
 
+    public function update($id, $data) {
+        $this->conn->beginTransaction();
+        
+        try {
+            $queryVenta = "UPDATE " . $this->table_name . "
+                        SET CLIENTE_ID = :cliente_id, 
+                            EMPLEADO_ID = :empleado_id, 
+                            TOTAL = :total, 
+                            ESTADO = :estado, 
+                            METODO_PAGO = :metodo_pago
+                        WHERE VENTA_ID = :id";
+            
+            $stmt = $this->conn->prepare($queryVenta);
+            $stmt->bindParam(":cliente_id", $data->cliente_id);
+            $stmt->bindParam(":empleado_id", $data->empleado_id);
+            $stmt->bindParam(":total", $data->total);
+            $stmt->bindParam(":estado", $data->estado);
+            $stmt->bindParam(":metodo_pago", $data->metodo_pago);
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+            
+            $queryDelete = "DELETE FROM DETALLE_VENTA WHERE VENTA_ID = :venta_id";
+            $stmtDelete = $this->conn->prepare($queryDelete);
+            $stmtDelete->bindParam(":venta_id", $id);
+            $stmtDelete->execute();
+            
+            foreach ($data->detalles as $detalle) {
+                $queryDetalle = "INSERT INTO DETALLE_VENTA (VENTA_ID, PRODUCTO_ID, CANTIDAD, PRECIO) 
+                                VALUES (:venta_id, :producto_id, :cantidad, :precio)";
+                
+                $stmtDetalle = $this->conn->prepare($queryDetalle);
+                $stmtDetalle->bindParam(":venta_id", $id);
+                $stmtDetalle->bindParam(":producto_id", $detalle->producto_id);
+                $stmtDetalle->bindParam(":cantidad", $detalle->cantidad);
+                $stmtDetalle->bindParam(":precio", $detalle->precio);
+                $stmtDetalle->execute();
+            }
+            
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            return false;
+        }
+    }
+
     public function delete($id) {
         $this->conn->beginTransaction();
         try {

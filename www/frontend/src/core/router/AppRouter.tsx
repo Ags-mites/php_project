@@ -11,6 +11,10 @@ import { ClientsPage } from '../../modules/clients/pages/ClientsPage';
 import { EmployeesPage } from '../../modules/employees/pages/EmployeesPage';
 import { SizesPage } from '../../modules/sizes/pages/SizesPage';
 import { SupplierPage } from '../../modules/suppliers/pages/SuppliersPage';
+import { SalesPage } from '@/modules/sales/pages/Sales';
+
+import { CreateSalePage } from '@/modules/sales/pages/CreateSalePage';
+import { EditSalePage } from '@/modules/sales/pages/EditSalePage';
 
 export function AppRouter() {
   return (
@@ -36,6 +40,9 @@ export function AppRouter() {
         <Route path="employees" element={<EmployeesPage />} />
         <Route path="suppliers" element={<SupplierPage />} />
         <Route path="sizes" element={<SizesPage />} />
+        <Route path="sales" element={<SalesPage />} />
+        <Route path="sales/new" element={<CreateSalePage />} />
+        <Route path="sales/edit/:id" element={<EditSalePage />} />
       </Route>
     </Routes>
   );

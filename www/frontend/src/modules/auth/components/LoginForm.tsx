@@ -108,7 +108,7 @@ export function LoginForm() {
             <p className="text-center text-sm text-muted-foreground">
               ¿No tienes cuenta?{' '}
               <Link to="/register" className="text-primary hover:underline">
-                Regístrate 
+                Regístrate
               </Link>
             </p>
           </form>

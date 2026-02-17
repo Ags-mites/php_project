@@ -1,60 +1,43 @@
 import { z } from 'zod';
-
-export const clientSchema = z.object({
-  nombre: z.string().min(1, 'Nombre requerido'),
-  email: z.string().email('Email inválido').optional(),
-  telefono: z.string().min(10, 'Teléfono inválido').optional(),
-  direccion: z.string().optional(),
-});
-
-export type ClientFormData = z.infer<typeof clientSchema>;
-
-export interface Client {
-  id: string;
-  nombre: string;
-  email?: string;
-  telefono?: string;
-  direccion?: string;
-  createdAt?: string;
-}
+import type { Product, Client, Employee } from './';
 
 export const saleDetailSchema = z.object({
-  productoId: z.string().min(1, 'Producto requerido'),
+  producto_id: z.number().positive('Producto requerido'),
   cantidad: z.number().int().positive('Cantidad minima 1'),
-  precioUnitario: z.number().positive('Precio debe ser positivo'),
+  precio: z.number().positive('Precio debe ser positivo'),
 });
 
-export const saleSchema = z.object({
-  clienteId: z.string().min(1, 'Cliente requerido'),
+export const saleFormSchema = z.object({
+  cliente_id: z.number().positive('Cliente requerido'),
+  empleado_id: z.number().positive('Empleado requerido'),
+  total: z.number().positive('Total debe ser positivo'),
+  estado: z.enum(['PENDIENTE', 'COMPLETADA', 'CANCELADA']),
+  metodo_pago: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA']),
   detalles: z.array(saleDetailSchema).min(1, 'Al menos un producto'),
-  metodoPago: z.enum(['efectivo', 'tarjeta', 'transferencia']),
-  observaciones: z.string().optional(),
 });
 
-export type SaleFormData = z.infer<typeof saleSchema>;
+export type SaleFormData = z.infer<typeof saleFormSchema>;
 
 export interface Sale {
-  id: string;
-  clienteId: string;
-  cliente?: Client;
-  detalles: SaleDetail[];
+  id: number;
+  cliente: Client;
+  empleado: Employee;
   total: number;
-  metodoPago: string;
-  observaciones?: string;
+  estado: 'PENDIENTE' | 'COMPLETADA' | 'CANCELADA';
+  metodo_pago: 'EFECTIVO' | 'TARJETA' | 'TRANSFERENCIA';
   fecha: string;
-  estado: 'completada' | 'cancelada' | 'pendiente';
+  detalles: SaleDetail[];
 }
 
 export interface SaleDetail {
-  productoId: string;
-  producto?: Product;
+  id: number;
+  venta_id: number;
+  producto_id: number;
   cantidad: number;
-  precioUnitario: number;
-  subtotal: number;
+  precio: number;
+  producto?: Product;
 }
 
-interface Product {
-  id: string;
-  nombre: string;
-  codigo: string;
+export interface SalesResponse {
+  data: Sale[];
 }

@@ -38,7 +38,7 @@ class SaleService {
                 $sale_item = array(
                     "id" => $row['VENTA_ID'],
                     "fecha" => $row['FECHA'],
-                    "total" => $row['TOTAL'],
+                    "total" => (float) $row['TOTAL'],
                     "estado" => $row['ESTADO'],
                     "metodo_pago" => $row['METODO_PAGO'],
                     "cliente" => array(
@@ -92,7 +92,7 @@ class SaleService {
             $sale_item = array(
                 "id" => $row['VENTA_ID'],
                 "fecha" => $row['FECHA'],
-                "total" => $row['TOTAL'],
+                "total" => (float) $row['TOTAL'],
                 "estado" => $row['ESTADO'],
                 "metodo_pago" => $row['METODO_PAGO'],
                 "cliente" => array(
@@ -150,7 +150,7 @@ class SaleService {
                 $sale_item = array(
                     "id" => $saleId,
                     "fecha" => $saleData['FECHA'],
-                    "total" => $saleData['TOTAL'],
+                    "total" => (float) $saleData['TOTAL'],
                     "estado" => $saleData['ESTADO'],
                     "metodo_pago" => $saleData['METODO_PAGO'],
                     "cliente" => array(

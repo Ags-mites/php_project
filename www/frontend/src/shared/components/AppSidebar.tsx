@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -59,10 +60,10 @@ export function AppSidebar() {
           {filteredNavItems.map((item) => (
             <SidebarMenuItem key={item.url}>
               <SidebarMenuButton asChild isActive={location.pathname === item.url}>
-                <a href={item.url}>
+                <Link to={item.url}>
                   <item.icon className="h-4 w-4" />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
