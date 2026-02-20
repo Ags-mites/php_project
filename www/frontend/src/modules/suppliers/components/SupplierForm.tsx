@@ -35,10 +35,9 @@ export function SupplierForm({ open, onOpenChange, initialData, onSubmit }: Supp
         resolver: zodResolver(supplierSchema),
         defaultValues: initialData || {
             nombre_empresa: '',
-            telefono: '',
-            email: '',
+            pais_origen: '',
             direccion: '',
-            ciudad: '',
+            email_contacto: '',
         },
     });
 
@@ -49,10 +48,9 @@ export function SupplierForm({ open, onOpenChange, initialData, onSubmit }: Supp
             } else {
                 form.reset({
                     nombre_empresa: '',
-                    telefono: '',
-                    email: '',
+                    pais_origen: '',
                     direccion: '',
-                    ciudad: '',
+                    email_contacto: '',
                 });
             }
         }
@@ -73,9 +71,9 @@ export function SupplierForm({ open, onOpenChange, initialData, onSubmit }: Supp
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{initialData ? 'Editar Empleado' : 'Crear Empleado'}</DialogTitle>
+                    <DialogTitle>{initialData ? 'Editar Proveedor' : 'Crear Proveedor'}</DialogTitle>
                     <DialogDescription>
-                        {initialData ? 'Actualiza los datos del empleado' : 'Agrega un nuevo empleado'}
+                        {initialData ? 'Actualiza los datos del proveedor' : 'Agrega un nuevo proveedor internacional'}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -85,9 +83,9 @@ export function SupplierForm({ open, onOpenChange, initialData, onSubmit }: Supp
                             name="nombre_empresa"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Nombre</FormLabel>
+                                    <FormLabel>Nombre de Empresa</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Nombre" {...field} />
+                                        <Input placeholder="Nombre de la empresa" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -96,26 +94,12 @@ export function SupplierForm({ open, onOpenChange, initialData, onSubmit }: Supp
 
                         <FormField
                             control={form.control}
-                            name="telefono"
+                            name="pais_origen"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Telefono</FormLabel>
+                                    <FormLabel>País de Origen</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Telefono" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Email" {...field} />
+                                        <Input placeholder="País de origen" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -127,9 +111,9 @@ export function SupplierForm({ open, onOpenChange, initialData, onSubmit }: Supp
                             name="direccion"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Direccion</FormLabel>
+                                    <FormLabel>Dirección</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Direccion" {...field} />
+                                        <Input placeholder="Dirección" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -138,12 +122,12 @@ export function SupplierForm({ open, onOpenChange, initialData, onSubmit }: Supp
 
                         <FormField
                             control={form.control}
-                            name="ciudad"
+                            name="email_contacto"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Ciudad</FormLabel>
+                                    <FormLabel>Email de Contacto</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Ciudad" {...field} />
+                                        <Input placeholder="email@ejemplo.com" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

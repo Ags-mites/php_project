@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBag, ArrowRight, Star, Heart, Shield } from 'lucide-react';
+import { Plane, ArrowRight, Star, Globe, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function LandingPage() {
@@ -11,8 +11,8 @@ export function LandingPage() {
             <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-2 font-bold text-xl text-primary">
-                        <ShoppingBag className="h-6 w-6" />
-                        <span>Baby Boutique</span>
+                        <Plane className="h-6 w-6" />
+                        <span>Importaciones</span>
                     </div>
                     <div className="flex items-center gap-4">
                         <Button variant="ghost" onClick={() => navigate('/login')}>
@@ -36,9 +36,9 @@ export function LandingPage() {
                             transition={{ duration: 0.5 }}
                         >
                             <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl">
-                                Moda perfecta para los <br className="hidden md:block" />
-                                <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">
-                                    pequeños del hogar
+                                Gestión integral de <br className="hidden md:block" />
+                                <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">
+                                    comercio exterior
                                 </span>
                             </h1>
                         </motion.div>
@@ -49,8 +49,8 @@ export function LandingPage() {
                             transition={{ duration: 0.5, delay: 0.1 }}
                             className="text-lg md:text-xl text-muted-foreground max-w-2xl"
                         >
-                            Descubre ropa suave, cómoda y con estilo para bebés y niños.
-                            Calidad premium pensada para su delicada piel.
+                            Controla tus importaciones, proveedores internacionales, 
+                            documentación aduanera y logística en un solo sistema.
                         </motion.p>
 
                         <motion.div
@@ -75,18 +75,18 @@ export function LandingPage() {
                         >
                             <FeatureCard
                                 icon={<Star className="h-6 w-6 text-yellow-500" />}
-                                title="Calidad Premium"
-                                description="Materiales seleccionados para la máxima comodidad y durabilidad."
+                                title="Control Total"
+                                description="Gestiona todas tus importaciones desde un solo panel."
                             />
                             <FeatureCard
-                                icon={<Heart className="h-6 w-6 text-red-500" />}
-                                title="Diseños Únicos"
-                                description="Estilos exclusivos que harán lucir increíble a tu bebé."
+                                icon={<Globe className="h-6 w-6 text-green-500" />}
+                                title="Proveedores Globales"
+                                description="Administra tus proveedores internacionales fácilmente."
                             />
                             <FeatureCard
                                 icon={<Shield className="h-6 w-6 text-blue-500" />}
-                                title="Compra Segura"
-                                description="Plataforma confiable para gestionar tu inventario y ventas."
+                                title="Documentación Segura"
+                                description="Controla documentos aduaneros y pagos de forma segura."
                             />
                         </motion.div>
                     </div>
@@ -95,7 +95,7 @@ export function LandingPage() {
 
             <footer className="border-t py-8 bg-muted/20">
                 <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-                    <p>&copy; {new Date().getFullYear()} Baby Boutique. Todos los derechos reservados.</p>
+                    <p>&copy; {new Date().getFullYear()} Sistema de Importaciones. Todos los derechos reservados.</p>
                 </div>
             </footer>
         </div>

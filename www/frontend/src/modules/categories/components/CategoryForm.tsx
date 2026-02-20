@@ -34,8 +34,7 @@ export function CategoryForm({ open, onOpenChange, initialData, onSubmit }: Cate
   const form = useForm<CategoryFormData>({
     resolver: zodResolver(categorySchema),
     defaultValues: initialData || {
-      nombre: '',
-      descripcion: '',
+      nombre_categoria: '',
     },
   });
 
@@ -45,8 +44,7 @@ export function CategoryForm({ open, onOpenChange, initialData, onSubmit }: Cate
         form.reset(initialData);
       } else {
         form.reset({
-          nombre: '',
-          descripcion: '',
+          nombre_categoria: '',
         });
       }
     }
@@ -69,33 +67,19 @@ export function CategoryForm({ open, onOpenChange, initialData, onSubmit }: Cate
         <DialogHeader>
           <DialogTitle>{initialData ? 'Editar Categoría' : 'Crear Categoría'}</DialogTitle>
           <DialogDescription>
-            {initialData ? 'Actualiza los datos de la categoría' : 'Agrega una nueva categoría'}
+            {initialData ? 'Actualiza los datos de la categoría' : 'Agrega una nueva categoría de productos'}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="nombre"
+              name="nombre_categoria"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nombre</FormLabel>
+                  <FormLabel>Nombre de Categoría</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nombre de la categoría" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="descripcion"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Descripción</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Descripción de la categoría" {...field} />
+                    <Input placeholder="Electrónica" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -26,39 +26,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  productSchema,
-  type ProductFormData,
-  type Category,
-  type Size,
-  type Supplier
-} from '@/shared/schemas';
+import { productSchema, type ProductFormData, type Category } from '@/shared/schemas';
 
 interface ProductFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialData?: ProductFormData | null;
   categories: Category[];
-  sizes: Size[];
-  suppliers: Supplier[];
   onSubmit: (data: ProductFormData) => Promise<void>;
 }
 
-export function ProductForm({ open, onOpenChange, initialData, categories, sizes, suppliers, onSubmit }: ProductFormProps) {
+export function ProductForm({ open, onOpenChange, initialData, categories, onSubmit }: ProductFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: initialData || {
-      codigo: '',
+      id_categoria: 0,
       descripcion: '',
-      color: '',
-      marca: '',
-      stock: 0,
-      precio: 0,
-      categoria_id: 0,
-      talla_id: 0,
-      proveedor_id: 0,
+      valor_unitario: 0,
+      pais_origen: '',
+      sku: '',
     },
   });
 
@@ -68,15 +56,11 @@ export function ProductForm({ open, onOpenChange, initialData, categories, sizes
         form.reset(initialData);
       } else {
         form.reset({
-          codigo: '',
+          id_categoria: 0,
           descripcion: '',
-          color: '',
-          marca: '',
-          stock: 0,
-          precio: 0,
-          categoria_id: 0,
-          talla_id: 0,
-          proveedor_id: 0,
+          valor_unitario: 0,
+          pais_origen: '',
+          sku: '',
         });
       }
     }
@@ -99,7 +83,7 @@ export function ProductForm({ open, onOpenChange, initialData, categories, sizes
         <DialogHeader>
           <DialogTitle>{initialData ? 'Editar Producto' : 'Crear Producto'}</DialogTitle>
           <DialogDescription>
-            {initialData ? 'Actualiza los datos del producto' : 'Agrega un nuevo producto al inventario'}
+            {initialData ? 'Actualiza los datos del producto' : 'Agrega un nuevo producto importado'}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -107,12 +91,12 @@ export function ProductForm({ open, onOpenChange, initialData, categories, sizes
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="codigo"
+                name="sku"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Código</FormLabel>
+                    <FormLabel>SKU</FormLabel>
                     <FormControl>
-                      <Input placeholder="PROD-001" {...field} />
+                      <Input placeholder="SKU-001" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -120,13 +104,27 @@ export function ProductForm({ open, onOpenChange, initialData, categories, sizes
               />
               <FormField
                 control={form.control}
-                name="marca"
+                name="id_categoria"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Marca</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nike" {...field} />
-                    </FormControl>
+                    <FormLabel>Categoría</FormLabel>
+                    <Select
+                      onValueChange={(value) => field.onChange(parseInt(value))}
+                      value={field.value?.toString() || ''}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Seleccionar" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat.id} value={cat.id.toString()}>
+                            {cat.nombre_categoria}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -150,44 +148,10 @@ export function ProductForm({ open, onOpenChange, initialData, categories, sizes
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="color"
+                name="valor_unitario"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Color</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Rojo" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="stock"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Stock</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="0"
-                        value={field.value}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="precio"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Precio</FormLabel>
+                    <FormLabel>Valor Unitario</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -203,84 +167,13 @@ export function ProductForm({ open, onOpenChange, initialData, categories, sizes
               />
               <FormField
                 control={form.control}
-                name="categoria_id"
+                name="pais_origen"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Categoría</FormLabel>
-                    <Select
-                      onValueChange={(value) => field.onChange(parseInt(value))}
-                      value={field.value?.toString() || ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Seleccionar" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat.id} value={cat.id.toString()}>
-                            {cat.nombre}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="talla_id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Talla</FormLabel>
-                    <Select
-                      onValueChange={(value) => field.onChange(parseInt(value))}
-                      value={field.value?.toString() || ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Seleccionar" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {sizes.map((size) => (
-                          <SelectItem key={size.id} value={size.id.toString()}>
-                            {size.talla}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="proveedor_id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Proveedor</FormLabel>
-                    <Select
-                      onValueChange={(value) => field.onChange(parseInt(value))}
-                      value={field.value?.toString() || ''}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Seleccionar" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {suppliers.map((sup) => (
-                          <SelectItem key={sup.id} value={sup.id.toString()}>
-                            {sup.nombre_empresa}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>País de Origen</FormLabel>
+                    <FormControl>
+                      <Input placeholder="China" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -4,7 +4,7 @@ export interface LoginResponse {
   message: string;
   token: string;
   username: string;
-  role: 'Administrator' | 'Supervisor' | 'Developer';
+  role: 'Administrador' | 'Supervisor' | 'Desarrollador';
 }
 
 export interface RegisterRequest {

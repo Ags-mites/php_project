@@ -7,5 +7,5 @@ export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
     const { isAuthenticated } = useSelector((state: RootState) => state.auth);
     return !isAuthenticated
         ? <>{children}</>
-        : <Navigate to="/inventory" replace />
+        : <Navigate to="/categorias" replace />
 };

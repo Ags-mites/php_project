@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { Package, Users, ShoppingCart, LogOut, Tags, Truck, Ruler } from 'lucide-react';
+import { Package, Tags, Truck, FileText, CreditCard, Plane, LogOut } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -22,13 +22,13 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { title: 'Inventario', url: '/inventory', icon: Package, roles: ['Administrator', 'Supervisor', 'Developer'] },
-  { title: 'Categorías', url: '/categories', icon: Tags, roles: ['Administrator', 'Supervisor', 'Developer'] },
-  { title: 'Clientes', url: '/clients', icon: Users, roles: ['Administrator', 'Supervisor', 'Developer'] },
-  { title: 'Empleados', url: '/employees', icon: Users, roles: ['Administrator', 'Developer'] },
-  { title: 'Proveedores', url: '/suppliers', icon: Truck, roles: ['Administrator', 'Supervisor', 'Developer'] },
-  { title: 'Tallas', url: '/sizes', icon: Ruler, roles: ['Administrator', 'Supervisor', 'Developer'] },
-  { title: 'Ventas', url: '/sales', icon: ShoppingCart, roles: ['Administrator', 'Supervisor', 'Developer'] },
+  { title: 'Categorías', url: '/categorias', icon: Tags, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
+  { title: 'Proveedores', url: '/proveedores', icon: Truck, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
+  { title: 'Productos', url: '/productos', icon: Package, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
+  { title: 'Importaciones', url: '/importaciones', icon: Plane, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
+  { title: 'Documentos', url: '/documentos', icon: FileText, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
+  { title: 'Pagos', url: '/pagos', icon: CreditCard, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
+  { title: 'Transportes', url: '/transportes', icon: Truck, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
 ];
 
 export function AppSidebar() {
@@ -50,7 +50,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2">
-          <span className="text-lg font-bold">Boutique</span>
+          <span className="text-lg font-bold">Importaciones</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

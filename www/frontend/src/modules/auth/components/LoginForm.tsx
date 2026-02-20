@@ -46,7 +46,7 @@ export function LoginForm() {
           role: response.role
         }
       }));
-      navigate('/inventory');
+      navigate('/categorias');
     } catch {
       setError('Credenciales inválidas. Por favor intenta de nuevo.');
     } finally {

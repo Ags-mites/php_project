@@ -6,13 +6,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-include_once 'controllers/ProductController.php';
-include_once 'controllers/CategoryController.php';
-include_once 'controllers/ClientController.php';
-include_once 'controllers/EmployeeController.php';
-include_once 'controllers/SaleController.php';
-include_once 'controllers/SupplierController.php';
-include_once 'controllers/SizeController.php';
+include_once 'controllers/CategoriaController.php';
+include_once 'controllers/EstadoImportacionController.php';
+include_once 'controllers/ProveedorInternacionalController.php';
+include_once 'controllers/ProductoController.php';
+include_once 'controllers/ImportacionController.php';
+include_once 'controllers/DetalleImportacionController.php';
+include_once 'controllers/DocumentoAduaneroController.php';
+include_once 'controllers/PagoController.php';
+include_once 'controllers/TransporteController.php';
 
 $uri = trim($_SERVER['REQUEST_URI'], '/');
 $parts = explode('/', $uri);
@@ -21,8 +23,8 @@ $resource = is_numeric($lastPart) ? $parts[count($parts) - 2] : $lastPart;
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-if ($resource === 'products') {
-    $controller = new ProductController();
+if ($resource === 'categorias') {
+    $controller = new CategoriaController();
     $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
     
     if ($method === 'GET' && $id) {
@@ -39,8 +41,8 @@ if ($resource === 'products') {
         http_response_code(405);
         echo json_encode(["message" => "Method not allowed"]);
     }
-} elseif ($resource === 'categories') {
-    $controller = new CategoryController();
+} elseif ($resource === 'estados') {
+    $controller = new EstadoImportacionController();
     $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
     
     if ($method === 'GET' && $id) {
@@ -57,10 +59,10 @@ if ($resource === 'products') {
         http_response_code(405);
         echo json_encode(["message" => "Method not allowed"]);
     }
-} elseif ($resource === 'clients') {
-    $controller = new ClientController();
+} elseif ($resource === 'proveedores') {
+    $controller = new ProveedorInternacionalController();
     $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
-
+    
     if ($method === 'GET' && $id) {
         $controller->getById($id);
     } elseif ($method === 'GET') {
@@ -75,13 +77,12 @@ if ($resource === 'products') {
         http_response_code(405);
         echo json_encode(["message" => "Method not allowed"]);
     }
-
-} elseif ($resource === 'employees') {
-    $controller = new EmployeeController();
+} elseif ($resource === 'productos') {
+    $controller = new ProductoController();
     $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
     
     if ($method === 'GET' && $id) {
-        $controller->getById($id);  
+        $controller->getById($id);
     } elseif ($method === 'GET') {
         $controller->getAll();
     } elseif ($method === 'POST') {
@@ -94,12 +95,12 @@ if ($resource === 'products') {
         http_response_code(405);
         echo json_encode(["message" => "Method not allowed"]);
     }
-} elseif ($resource === 'suppliers') {
-    $controller = new SupplierController();
+} elseif ($resource === 'importaciones') {
+    $controller = new ImportacionController();
     $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
     
     if ($method === 'GET' && $id) {
-        $controller->getById($id);  
+        $controller->getById($id);
     } elseif ($method === 'GET') {
         $controller->getAll();
     } elseif ($method === 'POST') {
@@ -112,12 +113,12 @@ if ($resource === 'products') {
         http_response_code(405);
         echo json_encode(["message" => "Method not allowed"]);
     }
-}  elseif ($resource === 'size') {
-    $controller = new SizeController();
+} elseif ($resource === 'detalles') {
+    $controller = new DetalleImportacionController();
     $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
     
     if ($method === 'GET' && $id) {
-        $controller->getById($id);  
+        $controller->getById($id);
     } elseif ($method === 'GET') {
         $controller->getAll();
     } elseif ($method === 'POST') {
@@ -130,10 +131,46 @@ if ($resource === 'products') {
         http_response_code(405);
         echo json_encode(["message" => "Method not allowed"]);
     }
-}  elseif ($resource === 'sales') {
-    $controller = new SaleController();
+} elseif ($resource === 'documentos') {
+    $controller = new DocumentoAduaneroController();
     $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
-
+    
+    if ($method === 'GET' && $id) {
+        $controller->getById($id);
+    } elseif ($method === 'GET') {
+        $controller->getAll();
+    } elseif ($method === 'POST') {
+        $controller->create(json_decode(file_get_contents("php://input")));
+    } elseif ($method === 'PUT' && $id) {
+        $controller->update($id, json_decode(file_get_contents("php://input")));
+    } elseif ($method === 'DELETE' && $id) {
+        $controller->delete($id);
+    } else {
+        http_response_code(405);
+        echo json_encode(["message" => "Method not allowed"]);
+    }
+} elseif ($resource === 'pagos') {
+    $controller = new PagoController();
+    $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
+    
+    if ($method === 'GET' && $id) {
+        $controller->getById($id);
+    } elseif ($method === 'GET') {
+        $controller->getAll();
+    } elseif ($method === 'POST') {
+        $controller->create(json_decode(file_get_contents("php://input")));
+    } elseif ($method === 'PUT' && $id) {
+        $controller->update($id, json_decode(file_get_contents("php://input")));
+    } elseif ($method === 'DELETE' && $id) {
+        $controller->delete($id);
+    } else {
+        http_response_code(405);
+        echo json_encode(["message" => "Method not allowed"]);
+    }
+} elseif ($resource === 'transportes') {
+    $controller = new TransporteController();
+    $id = isset($parts[count($parts) - 1]) && is_numeric($parts[count($parts) - 1]) ? $parts[count($parts) - 1] : null;
+    
     if ($method === 'GET' && $id) {
         $controller->getById($id);
     } elseif ($method === 'GET') {

@@ -13,7 +13,7 @@ import './index.css';
 function TokenInitializer() {
   setTokenGetter(() => store.getState().auth.token);
   setOnUnauthorized(() => store.dispatch(logout()));
-  
+
   return null;
 }
 
@@ -23,7 +23,8 @@ createRoot(document.getElementById('root')!).render(
       <TokenInitializer />
       <TooltipProvider>
         <Toaster richColors />
-        <BrowserRouter>
+        <BrowserRouter //basename="/frontend"
+        >
           <AppRouter />
         </BrowserRouter>
       </TooltipProvider>

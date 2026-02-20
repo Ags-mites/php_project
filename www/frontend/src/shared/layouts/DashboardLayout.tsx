@@ -7,15 +7,18 @@ import { AppSidebar } from '../components/AppSidebar';
 import { Menu, Home } from 'lucide-react';
 
 const pathNames: Record<string, string> = {
-  '/inventory': 'Productos',
-  '/clients': 'Clientes',
-  '/sales': 'Ventas',
-  '/settings': 'Configuración',
+  '/categorias': 'Categorías',
+  '/proveedores': 'Proveedores',
+  '/productos': 'Productos',
+  '/importaciones': 'Importaciones',
+  '/documentos': 'Documentos',
+  '/pagos': 'Pagos',
+  '/transportes': 'Transportes',
 };
 
 export function DashboardLayout() {
   const location = useLocation();
-  const currentPage = pathNames[location.pathname] || 'Inventario';
+  const currentPage = pathNames[location.pathname] || 'Dashboard';
 
   return (
     <SidebarProvider defaultOpen={true}>

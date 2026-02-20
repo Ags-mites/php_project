@@ -1,9 +1,9 @@
 <?php
 class Database {
     private $host = "db";
-    private $db_name = "Boutique";
-    private $username = "user";
-    private $password = "userpassword";
+    private $db_name = "InternationalTrade";
+    private $username = "root";
+    private $password = "rootpassword";
     public $conn;
 
     public function getConnection() {

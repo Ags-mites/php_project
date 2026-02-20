@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Pencil, Trash2, Plus, Package, Search } from 'lucide-react';
+import { Pencil, Trash2, Plus, Tags, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,7 +25,7 @@ export function CategoriesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor' || user?.role === 'Developer';
+  const canManage = user?.role === 'Administrador' || user?.role === 'Supervisor' || user?.role === 'Desarrollador';
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -47,8 +47,7 @@ export function CategoriesPage() {
     if (!searchTerm.trim()) return categories;
     const term = searchTerm.toLowerCase();
     return categories.filter((category) =>
-      category.nombre.toLowerCase().includes(term) ||
-      category.descripcion?.toLowerCase().includes(term)
+      category.nombre_categoria.toLowerCase().includes(term)
     );
   }, [categories, searchTerm]);
 
@@ -97,8 +96,7 @@ export function CategoriesPage() {
   const getInitialData = () => {
     if (!editingCategory) return null;
     return {
-      nombre: editingCategory.nombre,
-      descripcion: editingCategory.descripcion || '',
+      nombre_categoria: editingCategory.nombre_categoria,
     };
   };
 
@@ -132,7 +130,7 @@ export function CategoriesPage() {
         </div>
       ) : filteredCategories.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
-          <Package className="h-12 w-12 mb-4" />
+          <Tags className="h-12 w-12 mb-4" />
           <p>{searchTerm ? 'No se encontraron categorías' : 'No hay categorías registradas'}</p>
           {canManage && !searchTerm && (
             <Button variant="link" onClick={handleOpenCreate}>
@@ -146,15 +144,13 @@ export function CategoriesPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Nombre</TableHead>
-                <TableHead>Descripción</TableHead>
                 {canManage && <TableHead className="text-right">Acciones</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredCategories.map((category) => (
                 <TableRow key={category.id}>
-                  <TableCell>{category.nombre}</TableCell>
-                  <TableCell>{category.descripcion || '-'}</TableCell>
+                  <TableCell>{category.nombre_categoria}</TableCell>
                   {canManage && (
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">

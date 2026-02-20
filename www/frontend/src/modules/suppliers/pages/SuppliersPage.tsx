@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Pencil, Trash2, Plus, Package, Search } from 'lucide-react';
+import { Pencil, Trash2, Plus, Truck, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,7 +25,7 @@ export function SupplierPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrator' || user?.role === 'Supervisor' || user?.role === 'Developer';
+  const canManage = user?.role === 'Administrador' || user?.role === 'Supervisor' || user?.role === 'Desarrollador';
 
   const fetchSuppliers = useCallback(async () => {
     try {
@@ -33,7 +33,7 @@ export function SupplierPage() {
       const response = await supplierService.getAll();
       setSuppliers(response.data);
     } catch {
-      toast.error('Error al cargar las tallas');
+      toast.error('Error al cargar los proveedores');
     } finally {
       setIsLoading(false);
     }
@@ -48,19 +48,19 @@ export function SupplierPage() {
     const term = searchTerm.toLowerCase();
     return suppliers.filter((supplier) =>
       supplier.nombre_empresa.toLowerCase().includes(term) ||
-      supplier.telefono?.toLowerCase().includes(term) ||
-      supplier.email?.toLowerCase().includes(term) ||
-      supplier.direccion?.toLowerCase().includes(term)
+      supplier.pais_origen?.toLowerCase().includes(term) ||
+      supplier.direccion?.toLowerCase().includes(term) ||
+      supplier.email_contacto?.toLowerCase().includes(term)
     );
   }, [suppliers, searchTerm]);
 
   const handleCreate = async (data: SupplierFormData) => {
     try {
       await supplierService.create(data);
-      toast.success('Talla creada correctamente');
+      toast.success('Proveedor creado correctamente');
       fetchSuppliers();
     } catch {
-      toast.error('Error al crear la talla');
+      toast.error('Error al crear el proveedor');
     }
   };
 
@@ -68,21 +68,21 @@ export function SupplierPage() {
     if (!editingSupplier) return;
     try {
       await supplierService.update(editingSupplier.id.toString(), data);
-      toast.success('Talla actualizada correctamente');
+      toast.success('Proveedor actualizado correctamente');
       fetchSuppliers();
     } catch {
-      toast.error('Error al actualizar la talla');
+      toast.error('Error al actualizar el proveedor');
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta talla?')) return;
+    if (!confirm('¿Estás seguro de que deseas eliminar este proveedor?')) return;
     try {
       await supplierService.delete(id.toString());
-      toast.success('Talla eliminada correctamente');
+      toast.success('Proveedor eliminado correctamente');
       fetchSuppliers();
     } catch {
-      toast.error('Error al eliminar la talla');
+      toast.error('Error al eliminar el proveedor');
     }
   };
 
@@ -100,17 +100,16 @@ export function SupplierPage() {
     if (!editingSupplier) return null;
     return {
       nombre_empresa: editingSupplier.nombre_empresa,
-      telefono: editingSupplier.telefono,
-      email: editingSupplier.email,
+      pais_origen: editingSupplier.pais_origen,
       direccion: editingSupplier.direccion,
-      ciudad: editingSupplier.ciudad,
+      email_contacto: editingSupplier.email_contacto,
     };
   };
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Proveedores</h1>
+        <h1 className="text-2xl font-bold">Proveedores Internacionales</h1>
         {canManage && (
           <Button onClick={handleOpenCreate}>
             <Plus className="h-4 w-4 mr-2" />
@@ -137,7 +136,7 @@ export function SupplierPage() {
         </div>
       ) : filteredSuppliers.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
-          <Package className="h-12 w-12 mb-4" />
+          <Truck className="h-12 w-12 mb-4" />
           <p>{searchTerm ? 'No se encontraron proveedores' : 'No hay proveedores registrados'}</p>
           {canManage && !searchTerm && (
             <Button variant="link" onClick={handleOpenCreate}>
@@ -150,11 +149,10 @@ export function SupplierPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nombre</TableHead>
-                <TableHead>Teléfono</TableHead>
-                <TableHead>Email</TableHead>
+                <TableHead>Empresa</TableHead>
+                <TableHead>País de Origen</TableHead>
                 <TableHead>Dirección</TableHead>
-                <TableHead>Ciudad</TableHead>
+                <TableHead>Email</TableHead>
                 {canManage && <TableHead className="text-right">Acciones</TableHead>}
               </TableRow>
             </TableHeader>
@@ -162,10 +160,9 @@ export function SupplierPage() {
               {filteredSuppliers.map((supplier) => (
                 <TableRow key={supplier.id}>
                   <TableCell>{supplier.nombre_empresa}</TableCell>
-                  <TableCell>{supplier.telefono}</TableCell>
-                  <TableCell>{supplier.email}</TableCell>
+                  <TableCell>{supplier.pais_origen}</TableCell>
                   <TableCell>{supplier.direccion}</TableCell>
-                  <TableCell>{supplier.ciudad}</TableCell>
+                  <TableCell>{supplier.email_contacto}</TableCell>
                   {canManage && (
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">

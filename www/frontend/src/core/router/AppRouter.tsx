@@ -6,16 +6,13 @@ import { RegisterPage } from '../../modules/auth/pages/RegisterPage';
 import { LandingPage } from '../../modules/landing/pages/LandingPage';
 import { ProtectedRoute } from '../../modules/auth/components/ProtectedRoute';
 import { PublicRoute } from '../../modules/auth/components/PublicRoute';
-import { InventoryPage } from '../../modules/inventory/pages/InventoryPage';
 import { CategoriesPage } from '../../modules/categories/pages/CategoriesPage';
-import { ClientsPage } from '../../modules/clients/pages/ClientsPage';
-import { EmployeesPage } from '../../modules/employees/pages/EmployeesPage';
-import { SizesPage } from '../../modules/sizes/pages/SizesPage';
 import { SupplierPage } from '../../modules/suppliers/pages/SuppliersPage';
-import { SalesPage } from '@/modules/sales/pages/Sales';
-
-import { CreateSalePage } from '@/modules/sales/pages/CreateSalePage';
-import { EditSalePage } from '@/modules/sales/pages/EditSalePage';
+import { InventoryPage } from '../../modules/inventory/pages/InventoryPage';
+import { ImportacionesPage } from '../../modules/importaciones/pages/ImportacionesPage';
+import { DocumentosPage } from '../../modules/documentos/pages/DocumentosPage';
+import { PagosPage } from '../../modules/pagos/pages/PagosPage';
+import { TransportesPage } from '../../modules/transportes/pages/TransportesPage';
 
 export function AppRouter() {
   return (
@@ -40,15 +37,13 @@ export function AppRouter() {
           <DashboardLayout />
         </ProtectedRoute>
       }>
-        <Route path="inventory" element={<InventoryPage />} />
-        <Route path="categories" element={<CategoriesPage />} />
-        <Route path="clients" element={<ClientsPage />} />
-        <Route path="employees" element={<EmployeesPage />} />
-        <Route path="suppliers" element={<SupplierPage />} />
-        <Route path="sizes" element={<SizesPage />} />
-        <Route path="sales" element={<SalesPage />} />
-        <Route path="sales/new" element={<CreateSalePage />} />
-        <Route path="sales/edit/:id" element={<EditSalePage />} />
+        <Route path="categorias" element={<CategoriesPage />} />
+        <Route path="proveedores" element={<SupplierPage />} />
+        <Route path="productos" element={<InventoryPage />} />
+        <Route path="importaciones" element={<ImportacionesPage />} />
+        <Route path="documentos" element={<DocumentosPage />} />
+        <Route path="pagos" element={<PagosPage />} />
+        <Route path="transportes" element={<TransportesPage />} />
       </Route>
     </Routes>
   );

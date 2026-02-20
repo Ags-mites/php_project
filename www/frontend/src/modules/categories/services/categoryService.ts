@@ -3,22 +3,22 @@ import { type Category, type CategoryFormData, type CategoriesResponse } from '.
 
 export const categoryService = {
   getAll: async (): Promise<CategoriesResponse> => {
-    return apiClient.get<CategoriesResponse>('/business/categories');
+    return apiClient.get<CategoriesResponse>('/business/categorias');
   },
 
   getById: async (id: string): Promise<Category> => {
-    return apiClient.get<Category>(`/business/categories/${id}`);
+    return apiClient.get<Category>(`/business/categorias/${id}`);
   },
 
   create: async (data: CategoryFormData): Promise<Category> => {
-    return apiClient.post<Category>('/business/categories', data);
+    return apiClient.post<Category>('/business/categorias', data);
   },
 
   update: async (id: string, data: Partial<CategoryFormData>): Promise<Category> => {
-    return apiClient.put<Category>(`/business/categories/${id}`, data);
+    return apiClient.put<Category>(`/business/categorias/${id}`, data);
   },
 
   delete: async (id: string): Promise<void> => {
-    return apiClient.delete(`/business/categories/${id}`);
+    return apiClient.delete(`/business/categorias/${id}`);
   },
 };
