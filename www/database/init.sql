@@ -45,7 +45,7 @@ CREATE TABLE Importacion (
 
 CREATE TABLE DetalleImportacion (
     id_detalle INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      INT UNSIGNED NOT NULL,
+    id_importacion INT UNSIGNED NOT NULL,
     id_producto INT UNSIGNED NOT NULL,
     cantidad INT NOT NULL,
     precio_unitario DECIMAL(18, 2) NOT NULL,
@@ -181,16 +181,25 @@ INSERT INTO Transporte (id_importacion, tipo_transporte, empresa_transportista, 
 (4, 'Terrestre', 'UPS Freight', 'UPS-2026-98765'),
 (5, 'Aéreo', 'Lufthansa Cargo', 'LH-2026-CARGO01');
 
-CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'Admin123;
-CREATE USER IF NOT EXISTS 'dev'@'localhost'   IDENTIFIED BY Dev123;
-CREATE USER IF NOT EXISTS 'supervisor@'localhost'  IDENTIFIED BY 'Sup123';
+CREATE USER IF NOT EXISTS 'admin'@'localhost' 
+IDENTIFIED BY 'Admin123';
 
-GRANT ALL PRIVILEGES ON InternationalTrade.* TO 'admin'@'localhost';
+CREATE USER IF NOT EXISTS 'dev'@'localhost'   
+IDENTIFIED BY 'Dev123';
+
+CREATE USER IF NOT EXISTS 'supervisor'@'localhost'  
+IDENTIFIED BY 'Sup123';
+
+GRANT ALL PRIVILEGES 
+ON InternationalTrade.* 
+TO 'admin'@'localhost';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
-ON InternationalTrade.* TO 'dev'@'localhost';
+ON InternationalTrade.* 
+TO 'dev'@'localhost';
 
 GRANT SELECT
-ON InternationalTrade.* TO 'supervisor'@'localhost';
+ON InternationalTrade.* 
+TO 'supervisor'@'localhost';
 
 FLUSH PRIVILEGES;
