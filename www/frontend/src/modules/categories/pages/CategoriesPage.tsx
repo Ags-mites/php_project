@@ -25,7 +25,7 @@ export function CategoriesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrador' || user?.role === 'Supervisor' || user?.role === 'Desarrollador';
+  const canManage = user?.role === 'Administrador';
 
   const fetchCategories = useCallback(async () => {
     try {

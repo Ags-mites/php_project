@@ -26,7 +26,7 @@ export function InventoryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrador' || user?.role === 'Supervisor' || user?.role === 'Desarrollador';
+  const canManage = user?.role === 'Administrador';
 
   const fetchProducts = useCallback(async () => {
     try {

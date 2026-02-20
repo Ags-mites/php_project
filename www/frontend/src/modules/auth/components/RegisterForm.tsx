@@ -129,8 +129,7 @@ export function RegisterForm() {
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="1">Administrador</SelectItem>
-                      <SelectItem value="2">Developer</SelectItem>
-                      <SelectItem value="3">Supervisor</SelectItem>
+                      <SelectItem value="2">Operador</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

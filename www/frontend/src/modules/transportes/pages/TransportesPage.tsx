@@ -14,15 +14,18 @@ import {
 } from '@/components/ui/table';
 import { type RootState } from '@/core/store/store';
 import { transporteService } from '../services/transporteService';
-import { type Transporte } from '@/shared/schemas';
+import { type Transporte, type TransporteFormData } from '@/shared/schemas';
+import { TransporteForm } from '../components/TransporteForm';
 
 export function TransportesPage() {
   const [transportes, setTransportes] = useState<Transporte[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editingTransporte, setEditingTransporte] = useState<Transporte | null>(null);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrador' || user?.role === 'Supervisor' || user?.role === 'Desarrollador';
+  const canManage = user?.role === 'Administrador';
 
   const fetchTransportes = useCallback(async () => {
     try {
@@ -61,10 +64,57 @@ export function TransportesPage() {
     }
   };
 
+  const handleCreate = async (data: TransporteFormData) => {
+    try {
+      await transporteService.create(data);
+      toast.success('Transporte creado correctamente');
+      fetchTransportes();
+    } catch {
+      toast.error('Error al crear el transporte');
+    }
+  };
+
+  const handleUpdate = async (data: TransporteFormData) => {
+    if (!editingTransporte) return;
+    try {
+      await transporteService.update(editingTransporte.id.toString(), data);
+      toast.success('Transporte actualizado correctamente');
+      fetchTransportes();
+    } catch {
+      toast.error('Error al actualizar el transporte');
+    }
+  };
+
+  const handleOpenCreate = () => {
+    setEditingTransporte(null);
+    setOpenDialog(true);
+  };
+
+  const handleOpenEdit = (trans: Transporte) => {
+    setEditingTransporte(trans);
+    setOpenDialog(true);
+  };
+
+  const getInitialData = () => {
+    if (!editingTransporte) return null;
+    return {
+      id_importacion: editingTransporte.id_importacion,
+      tipo_transporte: editingTransporte.tipo_transporte || '',
+      empresa_transportista: editingTransporte.empresa_transportista || '',
+      numero_guia: editingTransporte.numero_guia,
+    };
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Transportes</h1>
+        {canManage && (
+          <Button onClick={handleOpenCreate}>
+            <Plus className="h-4 w-4 mr-2" />
+            Nuevo Transporte
+          </Button>
+        )}
       </div>
 
       <div className="flex items-center gap-2">
@@ -87,6 +137,11 @@ export function TransportesPage() {
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
           <Truck className="h-12 w-12 mb-4" />
           <p>{searchTerm ? 'No se encontraron transportes' : 'No hay transportes registrados'}</p>
+          {canManage && !searchTerm && (
+            <Button variant="link" onClick={handleOpenCreate}>
+              Crear el primer transporte
+            </Button>
+          )}
         </div>
       ) : (
         <div className="rounded-md border">
@@ -115,6 +170,13 @@ export function TransportesPage() {
                         <Button
                           variant="ghost"
                           size="icon"
+                          onClick={() => handleOpenEdit(trans)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() => handleDelete(trans.id)}
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />
@@ -128,6 +190,13 @@ export function TransportesPage() {
           </Table>
         </div>
       )}
+
+      <TransporteForm
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        initialData={getInitialData()}
+        onSubmit={editingTransporte ? handleUpdate : handleCreate}
+      />
     </div>
   );
 }

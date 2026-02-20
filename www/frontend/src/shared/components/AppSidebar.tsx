@@ -22,13 +22,13 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { title: 'Categorías', url: '/categorias', icon: Tags, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
-  { title: 'Proveedores', url: '/proveedores', icon: Truck, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
-  { title: 'Productos', url: '/productos', icon: Package, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
-  { title: 'Importaciones', url: '/importaciones', icon: Plane, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
-  { title: 'Documentos', url: '/documentos', icon: FileText, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
-  { title: 'Pagos', url: '/pagos', icon: CreditCard, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
-  { title: 'Transportes', url: '/transportes', icon: Truck, roles: ['Administrador', 'Supervisor', 'Desarrollador'] },
+  { title: 'Categorías', url: '/categorias', icon: Tags, roles: ['Administrador', 'Operador'] },
+  { title: 'Proveedores', url: '/proveedores', icon: Truck, roles: ['Administrador', 'Operador'] },
+  { title: 'Productos', url: '/productos', icon: Package, roles: ['Administrador', 'Operador'] },
+  { title: 'Importaciones', url: '/importaciones', icon: Plane, roles: ['Administrador', 'Operador'] },
+  { title: 'Documentos', url: '/documentos', icon: FileText, roles: ['Administrador'] },
+  { title: 'Pagos', url: '/pagos', icon: CreditCard, roles: ['Administrador'] },
+  { title: 'Transportes', url: '/transportes', icon: Truck, roles: ['Administrador', 'Operador'] },
 ];
 
 export function AppSidebar() {

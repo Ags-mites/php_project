@@ -14,15 +14,18 @@ import {
 } from '@/components/ui/table';
 import { type RootState } from '@/core/store/store';
 import { documentoService } from '../services/documentoService';
-import { type Documento } from '@/shared/schemas';
+import { type Documento, type DocumentoFormData } from '@/shared/schemas';
+import { DocumentoForm } from '../components/DocumentoForm';
 
 export function DocumentosPage() {
   const [documentos, setDocumentos] = useState<Documento[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editingDocumento, setEditingDocumento] = useState<Documento | null>(null);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrador' || user?.role === 'Supervisor' || user?.role === 'Desarrollador';
+  const canManage = user?.role === 'Administrador';
 
   const fetchDocumentos = useCallback(async () => {
     try {
@@ -60,10 +63,57 @@ export function DocumentosPage() {
     }
   };
 
+  const handleCreate = async (data: DocumentoFormData) => {
+    try {
+      await documentoService.create(data);
+      toast.success('Documento creado correctamente');
+      fetchDocumentos();
+    } catch {
+      toast.error('Error al crear el documento');
+    }
+  };
+
+  const handleUpdate = async (data: DocumentoFormData) => {
+    if (!editingDocumento) return;
+    try {
+      await documentoService.update(editingDocumento.id.toString(), data);
+      toast.success('Documento actualizado correctamente');
+      fetchDocumentos();
+    } catch {
+      toast.error('Error al actualizar el documento');
+    }
+  };
+
+  const handleOpenCreate = () => {
+    setEditingDocumento(null);
+    setOpenDialog(true);
+  };
+
+  const handleOpenEdit = (doc: Documento) => {
+    setEditingDocumento(doc);
+    setOpenDialog(true);
+  };
+
+  const getInitialData = () => {
+    if (!editingDocumento) return null;
+    return {
+      id_importacion: editingDocumento.id_importacion,
+      tipo_documento: editingDocumento.tipo_documento || '',
+      numero_documento: editingDocumento.numero_documento,
+      fecha_emision: editingDocumento.fecha_emision || '',
+    };
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Documentos Aduaneros</h1>
+        {canManage && (
+          <Button onClick={handleOpenCreate}>
+            <Plus className="h-4 w-4 mr-2" />
+            Nuevo Documento
+          </Button>
+        )}
       </div>
 
       <div className="flex items-center gap-2">
@@ -86,6 +136,11 @@ export function DocumentosPage() {
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
           <FileText className="h-12 w-12 mb-4" />
           <p>{searchTerm ? 'No se encontraron documentos' : 'No hay documentos registrados'}</p>
+          {canManage && !searchTerm && (
+            <Button variant="link" onClick={handleOpenCreate}>
+              Crear el primer documento
+            </Button>
+          )}
         </div>
       ) : (
         <div className="rounded-md border">
@@ -114,6 +169,13 @@ export function DocumentosPage() {
                         <Button
                           variant="ghost"
                           size="icon"
+                          onClick={() => handleOpenEdit(doc)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() => handleDelete(doc.id)}
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />
@@ -127,6 +189,13 @@ export function DocumentosPage() {
           </Table>
         </div>
       )}
+
+      <DocumentoForm
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        initialData={getInitialData()}
+        onSubmit={editingDocumento ? handleUpdate : handleCreate}
+      />
     </div>
   );
 }

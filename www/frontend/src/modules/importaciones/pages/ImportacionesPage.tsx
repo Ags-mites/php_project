@@ -15,14 +15,17 @@ import {
 import { type RootState } from '@/core/store/store';
 import { importacionService } from '../services/importacionService';
 import { type Importacion, type ImportacionFormData } from '@/shared/schemas';
+import { ImportacionForm } from '../components/ImportacionForm';
 
 export function ImportacionesPage() {
   const [importaciones, setImportaciones] = useState<Importacion[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editingImportacion, setEditingImportacion] = useState<Importacion | null>(null);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const canManage = user?.role === 'Administrador' || user?.role === 'Supervisor' || user?.role === 'Desarrollador';
+  const canManage = user?.role === 'Administrador';
 
   const fetchImportaciones = useCallback(async () => {
     try {
@@ -60,10 +63,57 @@ export function ImportacionesPage() {
     }
   };
 
+  const handleCreate = async (data: ImportacionFormData) => {
+    try {
+      await importacionService.create(data);
+      toast.success('Importación creada correctamente');
+      fetchImportaciones();
+    } catch {
+      toast.error('Error al crear la importación');
+    }
+  };
+
+  const handleUpdate = async (data: ImportacionFormData) => {
+    if (!editingImportacion) return;
+    try {
+      await importacionService.update(editingImportacion.id.toString(), data);
+      toast.success('Importación actualizada correctamente');
+      fetchImportaciones();
+    } catch {
+      toast.error('Error al actualizar la importación');
+    }
+  };
+
+  const handleOpenCreate = () => {
+    setEditingImportacion(null);
+    setOpenDialog(true);
+  };
+
+  const handleOpenEdit = (imp: Importacion) => {
+    setEditingImportacion(imp);
+    setOpenDialog(true);
+  };
+
+  const getInitialData = () => {
+    if (!editingImportacion) return null;
+    return {
+      id_proveedor: editingImportacion.id_proveedor,
+      id_estado: editingImportacion.id_estado,
+      fecha_inicio: editingImportacion.fecha_inicio || '',
+      fecha_estimada: editingImportacion.fecha_estimada || '',
+    };
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Importaciones</h1>
+        {canManage && (
+          <Button onClick={handleOpenCreate}>
+            <Plus className="h-4 w-4 mr-2" />
+            Nueva Importación
+          </Button>
+        )}
       </div>
 
       <div className="flex items-center gap-2">
@@ -86,6 +136,11 @@ export function ImportacionesPage() {
         <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
           <Plane className="h-12 w-12 mb-4" />
           <p>{searchTerm ? 'No se encontraron importaciones' : 'No hay importaciones registradas'}</p>
+          {canManage && !searchTerm && (
+            <Button variant="link" onClick={handleOpenCreate}>
+              Crear la primera importación
+            </Button>
+          )}
         </div>
       ) : (
         <div className="rounded-md border">
@@ -118,6 +173,13 @@ export function ImportacionesPage() {
                         <Button
                           variant="ghost"
                           size="icon"
+                          onClick={() => handleOpenEdit(imp)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() => handleDelete(imp.id)}
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />
@@ -131,6 +193,13 @@ export function ImportacionesPage() {
           </Table>
         </div>
       )}
+
+      <ImportacionForm
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        initialData={getInitialData()}
+        onSubmit={editingImportacion ? handleUpdate : handleCreate}
+      />
     </div>
   );
 }
