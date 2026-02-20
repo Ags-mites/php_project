@@ -7,7 +7,7 @@ return [
     'routes' => [
         'business' => [
             'auth' => false,
-            'roles' => ['Administrador', 'Supervisor', 'Desarrollador']
+            'roles' => ['Administrador', 'Operador']
         ]
     ]
 ];

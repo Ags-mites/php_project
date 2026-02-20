@@ -7,16 +7,10 @@ return [
         "role" => 1
     ],
     [
-        "username" => "developer",
-        "password" => "dev123",
-        "name" => "Desarrollador",
+        "username" => "operador",
+        "password" => "123456",
+        "name" => "Operador",
         "role" => 2
-    ],
-    [
-        "username" => "supervisor",
-        "password" => "supervisor123",
-        "name" => "Supervisor",
-        "role" => 3
     ]
 ];
 ?>

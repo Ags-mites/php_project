@@ -29,7 +29,7 @@ class DocumentoAduaneroService {
 
             return ["status" => 200, "body" => $arr];
         } else {
-            return ["status" => 404, "body" => ["message" => "No documents found."]];
+            return ["status" => 200, "body" => ["data" => []]];
         }
     }
 

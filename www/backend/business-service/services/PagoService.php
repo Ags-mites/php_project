@@ -30,7 +30,7 @@ class PagoService {
 
             return ["status" => 200, "body" => $arr];
         } else {
-            return ["status" => 404, "body" => ["message" => "No payments found."]];
+            return ["status" => 200, "body" => ["data" => []]];
         }
     }
 
